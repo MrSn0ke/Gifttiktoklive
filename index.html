@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>מתנות השבוע</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: transparent; /* אם את בודקת בדפדפן רגיל וריק: תחליפי זמנית ל-#000 */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      direction: rtl;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    /* כותרת "מתנות השבוע" */
+    .title {
+      font-size: 40px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 0 5px #a855f7, 0 0 15px #9333ea, 0 0 30px #7e22ce;
+      margin-bottom: 6px;
+    }
+
+    /* תומך השבוע (Top Gifter) */
+    .top-gifter {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      margin-bottom: 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.6);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.6), 0 0 20px rgba(59, 130, 246, 0.5);
+      border: 1px solid rgba(168, 85, 247, 0.7);
+    }
+
+    .top-gifter-label {
+      font-size: 16px;
+      color: #e5e7eb;
+    }
+
+    .top-gifter-name {
+      font-size: 18px;
+      font-weight: 700;
+      padding-inline: 4px;
+      background: linear-gradient(120deg, #facc15, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-stroke: 0.8px #000;
+      text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 16px rgba(0,0,0,0.85), 0 0 20px rgba(250,204,21,0.5);
+    }
+
+    /* מסגרת בסיסית – מתנות רגילות */
+    .image-wrapper {
+      width: 400px;
+      height: 65px;
+      border-radius: 24px;
+      overflow: visible;
+      background: #8b2bff;
+      padding: 3px;
+      position: relative;
+      box-shadow: 0 0 20px rgba(139, 43, 255, 0.8);
+      animation: glowPulse 2.5s ease-in-out infinite;
+      transition: box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    /* ===== BIG (10K) – קיבל את האנימציה הרכה ===== */
+    .image-wrapper.big-gift {
+      background: #facc15; /* זהב צהוב */
+      box-shadow: 0 0 14px rgba(250, 204, 21, 0.9),
+                  0 0 32px rgba(252, 211, 77, 0.9),
+                  0 0 55px rgba(253, 224, 130, 0.85);
+      position: relative;
+      animation: bigGlow 2.2s ease-in-out infinite;
+    }
+
+    .image-wrapper.big-gift::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 30px;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 0% 50%, rgba(255, 255, 255, 0.35) 0, transparent 60%),
+        radial-gradient(circle at 100% 50%, rgba(253, 224, 130, 0.45) 0, transparent 60%);
+      opacity: 0.7;
+      mix-blend-mode: screen;
+      animation: bigCorona 2.2s ease-in-out infinite;
+    }
+
+    .image-wrapper.big-gift .image-inner::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 50% 45%,
+        rgba(254, 252, 232, 0.8),
+        rgba(253, 224, 130, 0.3),
+        transparent 70%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      animation: bigInnerGlow 2.2s ease-in-out infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes bigGlow {
+      0%   { box-shadow: 0 0 12px rgba(250, 204, 21, 0.8), 0 0 28px rgba(252, 211, 77, 0.75); }
+      50%  { box-shadow: 0 0 22px rgba(253, 224, 130, 1), 0 0 45px rgba(254, 240, 180, 0.95); }
+      100% { box-shadow: 0 0 12px rgba(250, 204, 21, 0.8), 0 0 28px rgba(252, 211, 77, 0.75); }
+    }
+
+    @keyframes bigCorona {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    @keyframes bigInnerGlow {
+      0% { opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+
+    /* ===== MYTHIC (40K+) – עכשיו עם אפקט הברק של BIG, בצבע זהב־כתום ===== */
+    .image-wrapper.mythic-gift {
+      background: #ffb347; /* זהב־כתום */
+      box-shadow: 0 0 16px rgba(255, 190, 110, 0.9),
+                  0 0 36px rgba(255, 210, 140, 0.95),
+                  0 0 60px rgba(255, 240, 210, 0.9);
+      position: relative;
+    }
+
+    /* שכבה פנימית */
+    .image-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: #151515;
+      overflow: hidden;
+      z-index: 3;
+    }
+
+    /* ברק מית'יק – מעל התמונה */
+    .image-inner.mythic-gift::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 180%;
+      height: 220%;
+      transform: translate(-130%, -50%) rotate(18deg);
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0.95),
+        rgba(255, 191, 71, 0.98),
+        rgba(255,255,255,0)
+      );
+      opacity: 0;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 4;
+      animation: lightningFlash 2.4s linear infinite;
+    }
+
+    /* רדאר סגול קבוע */
+    .image-inner::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160%;
+      height: 160%;
+      border-radius: 50%;
+      border: 2px solid rgba(147, 51, 234, 0.5);
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0.8;
+      pointer-events: none;
+      animation: radarPulse 2.5s ease-out infinite;
+      z-index: 1;
+    }
+
+    /* תמונה – בלי חיתוך */
+    .image-inner img {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .empty {
+      color: white;
+      font-size: 18px;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 10px 14px;
+      border-radius: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* פינג פונג זוהר בסיסי למסגרת רגילה */
+    @keyframes glowPulse {
+      0%   { box-shadow: 0 0 12px rgba(147, 51, 234, 0.5); }
+      50%  { box-shadow: 0 0 38px rgba(147, 51, 234, 0.95); }
+      100% { box-shadow: 0 0 12px rgba(147, 51, 234, 0.5); }
+    }
+
+    /* אפקט רדאר */
+    @keyframes radarPulse {
+      0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 0.8; }
+      70%  { transform: translate(-50%, -50%) scale(1); opacity: 0.15; }
+      100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0; }
+    }
+
+    /* אפקט ברק */
+    @keyframes lightningFlash {
+      0%   { opacity: 0; transform: translate(-130%, -50%) rotate(18deg); }
+      25%  { opacity: 1; }
+      60%  { opacity: 0.4; }
+      100% { opacity: 0; transform: translate(130%, -50%) rotate(18deg); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="title">מתנות השבוע</div>
+
+    <div class="top-gifter">
+      <span class="top-gifter-label">תומך השבוע:</span>
+      <span class="top-gifter-name" id="topGifterName">HEVER</span>
+    </div>
+
+    <div class="image-wrapper" id="image-wrapper">
+      <div class="image-inner" id="image-inner">
+        <img id="gift-image" src="" alt="">
+      </div>
+    </div>
+
+    <div class="empty" id="status"></div>
+  </div>
+
+  <script>
+    // 🔹 תומך השבוע – תשני כאן
+    const TOP_GIFTER_NAME = "HEVER";
+    document.getElementById("topGifterName").textContent = TOP_GIFTER_NAME;
+
+    const img     = document.getElementById('gift-image');
+    const wrapper = document.getElementById('image-wrapper');
+    const inner   = document.getElementById('image-inner');
+    const status  = document.getElementById('status');
+
+    function showStatus(msg) {
+      status.textContent = msg;
+      status.style.display = 'block';
+    }
+
+    async function loadImages() {
+      // חייב לעבוד דרך Live Server (http://) ולא file://
+      const res = await fetch('images.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error('images.json not found (HTTP ' + res.status + ')');
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error('images.json חייב להיות מערך []');
+      return data;
+    }
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    (async () => {
+      let images = [];
+      try {
+        images = await loadImages();
+      } catch (e) {
+        console.error(e);
+        showStatus('לא הצלחתי לטעון images.json. פתחי את index.html עם Live Server.');
+        return;
+      }
+
+      if (!images.length) {
+        showStatus('אין עדיין מתנות בתיקייה 🙂');
+        return;
+      }
+
+      let order = images.map((_, i) => i);
+      shuffle(order);
+      let index = 0;
+
+      function showNextImage() {
+        img.style.opacity = 0;
+
+        setTimeout(() => {
+          if (index >= order.length) {
+            shuffle(order);
+            index = 0;
+          }
+
+          const current = images[order[index++]];
+          img.src = current?.src || '';
+
+          const isBig  = !!current?.big;
+          const isMyth = !!current?.mythic;
+
+          wrapper.classList.remove('big-gift', 'mythic-gift');
+          inner.classList.remove('big-gift', 'mythic-gift');
+
+          if (isMyth) {
+            wrapper.classList.add('mythic-gift');
+            inner.classList.add('mythic-gift');
+          } else if (isBig) {
+            wrapper.classList.add('big-gift');
+            inner.classList.add('big-gift');
+          }
+
+          img.style.opacity = 1;
+        }, 300);
+      }
+
+      showNextImage();
+      setInterval(showNextImage, 4000);
+    })();
+  </script>
+</body>
+</html>
